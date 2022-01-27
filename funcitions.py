@@ -80,6 +80,7 @@ def watermark(original_neurons: list, key:list, Ti: list, sequence: list)-> list
             weigth = indexes_of_neurons_to_change[neuron_counter]
             watermarked_neurons[weigth] = original_neurons[weigth] + int(key[bit_index])*strength*sequence[bit_index][neuron_counter]
     return watermarked_neurons
+    
 
 def decode(watermarked_neurons: list, Ti:list, sequence: list)->list:
     decoded_bits = []
