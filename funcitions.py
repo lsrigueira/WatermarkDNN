@@ -59,7 +59,7 @@ def emulateDNN():
         0.        , -0.00167626,  0.00662374,  0.01415987,  0.01582992,
        -0.00850856, -0.01438626,  0.0033305 , -0.00208019,  0.01136615,
        -0.00085878, -0.00410804, -0.00621831,  0.01407547, -0.01117415,
-        0.01043861, -0.01197298, -0.00219466,  0.00018706, -0.00023424]
+        0.01043861, -0.01197298, -0.00219466,  0.00018706, -0.00023424 ]
     return arraytest
 
 def get_pseudorandom_sequence(Ti: list) -> list:
@@ -71,10 +71,10 @@ def get_pseudorandom_sequence(Ti: list) -> list:
         pseudorandom_sequence.append(bit_sequence)
     return pseudorandom_sequence
 
-def watermark(original_neurons: list, key:list, Ti: list, sequence: list)-> list:
-    strength = 0.005
+def watermarkSS(original_neurons: list, key:list, Ti: list, sequence: list)-> list:
+    strength = 0.5
     watermarked_neurons = copy(original_neurons)
-    for bit_index in range(0,len(Ti)):
+    for bit_index in range(0,len(Ti)): #Bit a bit
         indexes_of_neurons_to_change = Ti[bit_index]
         for neuron_counter in range(0,len(indexes_of_neurons_to_change)-1):
             weigth = indexes_of_neurons_to_change[neuron_counter]
@@ -82,21 +82,35 @@ def watermark(original_neurons: list, key:list, Ti: list, sequence: list)-> list
     return watermarked_neurons
     
 
-def decode(watermarked_neurons: list, Ti:list, sequence: list)->list:
+def decodeSS(watermarked_neurons: list, Ti:list, sequence: list)->list:
     decoded_bits = []
     aux = ""
-    for bit_index in range(0,len(Ti)):
+    for bit_index in range(0,len(Ti)): #bit a bit
         indexes_of_neurons_to_decode = Ti[bit_index]
         adition = 0
         for neuron_counter in range(0,len(indexes_of_neurons_to_decode)-1):
             weigth = indexes_of_neurons_to_decode[neuron_counter]
             adition += watermarked_neurons[weigth]*sequence[bit_index][neuron_counter]
-        
         aux += str(sign(adition))
         if( (bit_index+1)%7 == 0):
             decoded_bits.append(aux)
             aux = ""
-
-    
-    
     return decoded_bits
+
+
+def get_Ri(neurons: list, Ti:list, sequence: list)->list:
+    ri = []
+    aux = ""
+    for bit_index in range(0,len(Ti)): #bit a bit
+        indexes_of_neurons_to_decode = Ti[bit_index]
+        adition = 0
+        for neuron_counter in range(0,len(indexes_of_neurons_to_decode)-1):
+            weigth = indexes_of_neurons_to_decode[neuron_counter]
+            adition += neurons[weigth]*sequence[bit_index][neuron_counter]
+    ri.append(adition)
+    return ri
+
+def watermarkSTDM(original_neurons: list, key:list)-> list:
+    print("ol")
+
+
